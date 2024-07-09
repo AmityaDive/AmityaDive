@@ -1,16 +1,28 @@
-## Hi there 👋
+# My Portfolio
 
-<!--
-**abarka90/abarka90** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+Welcome to my GitHub portfolio!
 
-Here are some ideas to get you started:
+## About Me
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+I am Amit, a data analyst. I'm fascinated by the power of data. 
+
+Feel free to explore and get in touch if you have any questions or opportunities for collaboration.
+
+## Projects
+
+### Project 1: A/B testing on advertising feed sequences
+
+- **Description**: Conducted A/B testing on advertising feed sequences, analyzing page views, sessions, clicks, RPM, and CTR. Identified revenue differences between test groups, highlighting ad sequence impact on user behavior
+- **Technologies Used**: Python
+- **Link**: [A/B testing on advertising feed sequences - Google Colab](https://colab.research.google.com/drive/1TMNWT52DCnenuApSeSYF-lTOGThcGy_G?usp=sharing)
+
+## Contact Me
+
+Feel free to reach out to me via email at amitbarkai9@gmail.com or connect with me on [LinkedIn](https://www.linkedin.com/in/amit-yanai/).
+
+## How to Navigate
+
+- **Projects**: Navigate to the "Projects" section to explore my work.
+- **Contact**: Use the "Contact Me" section to get in touch with me.
+
+Thank you for visiting my portfolio!
