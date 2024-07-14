@@ -4,7 +4,7 @@ Welcome to my GitHub portfolio!
 
 ## About Me
 
-I am Amit, a data analyst. I'm fascinated by the power of data. 
+I am Amit, a data analyst., and I'm fascinated by the power of data. 
 
 Feel free to explore and get in touch if you have any questions or opportunities for collaboration.
 
