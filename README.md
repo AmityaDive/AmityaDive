@@ -14,7 +14,7 @@ Feel free to explore and get in touch if you have any questions or opportunities
 
 - **Description**: Conducted A/B testing on advertising feed sequences, analyzing page views, sessions, clicks, RPM, and CTR. Identified revenue differences between test groups, highlighting ad sequence impact on user behavior
 - **Technologies Used**: Python
-- **Link**: [A/B testing on advertising feed sequences - Google Colab](https://colab.research.google.com/drive/1TMNWT52DCnenuApSeSYF-lTOGThcGy_G?usp=sharing)
+- **Link**: [Ads A/B Test Notebook](https://github.com/AmityaDive/AmityaDive/blob/main/Ads_A_B_Test.ipynb)
 
 ## Contact Me
 
