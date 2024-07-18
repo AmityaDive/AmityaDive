@@ -16,6 +16,13 @@ Feel free to explore and get in touch if you have any questions or opportunities
 - **Technologies Used**: Python
 - **Link**: [Ads A/B Test Notebook](https://github.com/AmityaDive/AmityaDive/blob/main/Ads_A_B_Test.ipynb)
 
+- ### Project 2: Mexican toys stores' sales analysis - 
+
+- **Description**: 
+- **Technologies Used**: SQL & Excel
+- **Link**: 
+
+
 ## Contact Me
 
 Feel free to reach out to me via email at amitbarkai9@gmail.com or connect with me on [LinkedIn](https://www.linkedin.com/in/amit-yanai/).
