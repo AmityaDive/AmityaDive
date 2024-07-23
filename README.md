@@ -18,7 +18,7 @@ Feel free to explore and get in touch if you have any questions or opportunities
 
 - ### Project 2: Mexican toys stores' sales analysis - 
 
-- **Description**: 
+- **Description**: Analyzed the 2017-2018 Mexican toy stores dataset to enhance profitability. Conducted a comparison of sales trends, units sold, and product profitability to identify key insights and opportunities for improvement.
 - **Technologies Used**: SQL & Excel
 - **Link**: 
 
