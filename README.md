@@ -20,7 +20,7 @@ Feel free to explore and get in touch if you have any questions or opportunities
 
 - **Description**: Analyzed the 2017-2018 Mexican toy stores dataset to enhance profitability. Conducted a comparison of sales trends, units sold, and product profitability to identify key insights and opportunities for improvement.
 - **Technologies Used**: SQL & Excel
-- **Link**: 
+- **Link**: [Maven Toys Store Analysis](https://github.com/AmityaDive/AmityaDive/tree/master/maven_toys_project)
 
 
 ## Contact Me
