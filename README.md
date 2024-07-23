@@ -12,13 +12,13 @@ Feel free to explore and get in touch if you have any questions or opportunities
 
 ### Project 1: A/B testing on advertising feed sequences
 
-- **Description**: Conducted A/B testing on advertising feed sequences, analyzing page views, sessions, clicks, RPM, and CTR. Identified revenue differences between test groups, highlighting ad sequence impact on user behavior
+- **Description**: Conducted A/B testing on advertising feed sequences, analyzing page views, sessions, clicks, RPM, and CTR. Identified revenue differences between test groups, highlighting the impact of ad sequencing on user behavior.
 - **Technologies Used**: Python
 - **Link**: [Ads A/B Test Notebook](https://github.com/AmityaDive/AmityaDive/blob/main/Ads_A_B_Test.ipynb)
 
-- ### Project 2: Mexican toys stores' sales analysis - 
+- ### Project 2: Maven toys stores' sales analysis 
 
-- **Description**: Analyzed the 2017-2018 Mexican toy stores dataset to enhance profitability. Conducted a comparison of sales trends, units sold, and product profitability to identify key insights and opportunities for improvement.
+- **Description**: Analyzed data from 2017-2018 for Mexican toy stores named 'Maven' to enhance profitability. Conducted a comprehensive comparison of sales trends, units sold, and product profitability to uncover key insights and improvement opportunities.
 - **Technologies Used**: SQL & Excel
 - **Link**: [Maven Toys Store Analysis](https://github.com/AmityaDive/AmityaDive/tree/master/maven_toys_project)
 
