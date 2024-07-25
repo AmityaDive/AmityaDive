@@ -14,7 +14,7 @@ Feel free to explore and get in touch if you have any questions or opportunities
 
 - **Description**: Conducted A/B testing on advertising feed sequences, analyzing page views, sessions, clicks, RPM, and CTR. Identified revenue differences between test groups, highlighting the impact of ad sequencing on user behavior.
 - **Technologies Used**: Python
-- **Link**: [Ads A/B Test Notebook](https://github.com/AmityaDive/AmityaDive/tree/master/AB_Testing_Python_Project)
+- **Link**: [Ads A/B Test Notebook](https://github.com/AmityaDive/AmityaDive/tree/master/Ads_A_B_Testing)
 
 - ### Project 2: Maven toys stores' sales analysis 
 
