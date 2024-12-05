@@ -34,15 +34,14 @@ ORDER BY category_profit DESC
 -- categories' profitability 2017 vs. 2018 (pivot table)
 
 WITH base_cte AS (
-SELECT  YEAR(sa.date) AS 'year', p.product_category, 
+SELECT  p.product_category,
+		YEAR(sa.date) AS 'year',  
 		DATEPART(QUARTER, sa.date) AS 'quarter',
-		(p.product_price - p.product_cost) * sa.units AS 'profit'
+		SUM((p.product_price - p.product_cost) * sa.units) AS 'category_profit'
 FROM products AS p JOIN sales AS sa
 ON p.product_id = sa.product_id
-), base_cte2 AS (
-SELECT year, quarter, product_category, SUM(profit) AS 'category_profit'
-FROM base_cte
-GROUP BY year, quarter, product_category
+--WHERE product_category = 'electronics'
+GROUP BY YEAR(sa.date), DATEPART(QUARTER, sa.date), product_category
 )
 SELECT product_category,
 		[2017 Q1], [2017 Q2], [2017 Q3], [2017 Q4],
@@ -52,7 +51,7 @@ FROM (
 		CONCAT(year, ' Q', quarter) AS year_quarter, 
 		product_category, 
 		category_profit
-	FROM base_cte2
+	FROM base_cte
 	) AS TBL
 PIVOT (SUM(category_profit) FOR 
 		year_quarter IN ([2017 Q1], [2017 Q2], [2017 Q3], [2017 Q4],
@@ -63,16 +62,14 @@ ORDER BY product_category
 -- number of units sold in 2017 vs. 2018 (pivot table)
 
 WITH base_cte AS (
-SELECT  YEAR(sa.date) AS 'year', 
+SELECT  p.product_category, 
+		YEAR(sa.date) AS 'year', 
 		DATEPART(QUARTER, sa.date) AS 'quarter',
-		p.product_category, 
-		sa.units
+		SUM(sa.units) AS 'units_sold'
 FROM products AS p JOIN sales AS sa
 ON p.product_id = sa.product_id
-), base_cte2 AS (
-SELECT year, quarter, product_category, SUM(units) AS 'units_sold'
-FROM base_cte
-GROUP BY year, quarter, product_category
+--WHERE product_category = 'electronics'
+GROUP BY YEAR(sa.date), DATEPART(QUARTER, sa.date), p.product_category
 )
 SELECT product_category,
 		[2017 Q1], [2017 Q2], [2017 Q3],
@@ -82,7 +79,7 @@ FROM (
 		CONCAT(year, ' Q', quarter) AS year_quarter, 
 		product_category, 
 		units_sold
-	FROM base_cte2
+	FROM base_cte
 	) AS TBL
 PIVOT (SUM(units_sold) FOR 
 		year_quarter IN ([2017 Q1], [2017 Q2], [2017 Q3],
@@ -90,116 +87,38 @@ PIVOT (SUM(units_sold) FOR
 	) AS PVT
 ORDER BY product_category
 
+
+-- TOYS --
 -- products' clean profit a specific category
 
-SELECT DISTINCT p.product_category, 
-				p.product_name,
-				(p.product_price - p.product_cost) AS 'profit'
-FROM products AS p JOIN sales AS sa
-ON p.product_id = sa.product_id
-WHERE p.product_category = 'electronics'
-ORDER BY profit
-
--- products' profit of a specific category (as PIVOT)
-
-WITH base_cte AS (
-SELECT  YEAR(sa.date) AS 'year', 
-		DATEPART(QUARTER, sa.date) AS 'quarter',
-		p.product_category, 
-		p.product_name,
-		(p.product_price - p.product_cost) * sa.units AS 'pre_profit'
-FROM products AS p JOIN sales AS sa
-ON p.product_id = sa.product_id
-), base_cte2 AS (
-SELECT year, quarter, product_name, 
-		SUM(pre_profit) AS 'product_profit'
-FROM base_cte
-WHERE product_category = 'electronics'
-GROUP BY year, quarter, product_category, product_name
-)
 SELECT product_name,
-		[2017 Q1], [2017 Q2], [2017 Q3], [2017 Q4],
-		[2018 Q1], [2018 Q2], [2018 Q3]
-FROM (
-	SELECT 
-		CONCAT(year, ' Q', quarter) AS year_quarter, 
-		product_name, 
-		product_profit
-	FROM base_cte2
-	) AS TBL
-PIVOT (SUM(product_profit) FOR 
-		year_quarter IN ([2017 Q1], [2017 Q2], [2017 Q3], [2017 Q4],
-						[2018 Q1], [2018 Q2], [2018 Q3])
-	) AS PVT
-ORDER BY product_name
+	   product_price AS 'price',
+	   product_cost AS 'cost',
+	   (product_price - product_cost) AS 'product_profit'
+FROM products
+WHERE product_category = 'toys'
 
-
--- number of units sold of a specific category (pivot table)
-
-WITH base_cte AS (
-SELECT  YEAR(sa.date) AS 'year', 
-		DATEPART(QUARTER, sa.date) AS 'quarter',
-		p.product_category, 
-		p.product_name,
-		sa.units
-FROM products AS p JOIN sales AS sa
-ON p.product_id = sa.product_id
-), base_cte2 AS (
-SELECT year, quarter, product_name, 
-		SUM(units) AS 'units_sold'
-FROM base_cte
-WHERE product_category = 'electronics'
-GROUP BY year, quarter, product_category, product_name
-)
-SELECT product_name,
-		[2017 Q1], [2017 Q2], [2017 Q3],
-		[2018 Q1], [2018 Q2], [2018 Q3]
-FROM (
-	SELECT 
-		CONCAT(year, ' Q', quarter) AS year_quarter, 
-		product_name, 
-		units_sold
-	FROM base_cte2
-	) AS TBL
-PIVOT (SUM(units_sold) FOR 
-		year_quarter IN ([2017 Q1], [2017 Q2], [2017 Q3],
-						[2018 Q1], [2018 Q2], [2018 Q3])
-	) AS PVT
-ORDER BY product_name
 
 
 -- Number of units sold for Action Figure and Dino Egg, and % out of total toys' products sold in each year
+
 WITH base_cte AS (
     SELECT  
+		p.product_name,
         YEAR(sa.date) AS 'year', 
-        DATEPART(QUARTER, sa.date) AS 'quarter',
-        p.product_category,
-        p.product_name,
-        sa.units
+        SUM(sa.units) AS 'units_sold_per_product',
+		SUM(SUM(sa.units)) OVER (PARTITION BY YEAR(sa.date)) AS 'total_units_sold_per_year',
+		ROUND(SUM(sa.units) * 100.0 / SUM(SUM(sa.units)) OVER (PARTITION BY YEAR(sa.date)), 0) AS '%_of_total_toys'
     FROM products AS p 
     JOIN sales AS sa ON p.product_id = sa.product_id
     WHERE DATEPART(QUARTER, sa.date) != 4
     AND p.product_category = 'toys' -- choose a category
-),
-yearly_totals AS (
-    SELECT 
-        year,
-        SUM(units) AS total_units_sold_per_year
-    FROM base_cte
-    GROUP BY year
+	GROUP BY YEAR(sa.date), p.product_name
 )
-SELECT 
-    b.product_name, 
-    b.year,
-    SUM(b.units) AS 'units_sold', 
-    ROUND((SUM(b.units) * 100.0 / y.total_units_sold_per_year), 0) AS '%_of_total_toys',
-	y.total_units_sold_per_year
-FROM base_cte b
-JOIN yearly_totals y ON b.year = y.year
-WHERE b.product_category = 'toys' -- choose a category
-AND b.product_name IN ('Dino Egg', 'Action Figure') -- choose products
-GROUP BY b.year, b.product_name, y.total_units_sold_per_year
-ORDER BY b.product_name, b.year
+SELECT *
+FROM base_cte
+WHERE product_name IN ('Dino Egg', 'Action Figure')
+ORDER BY product_name, year;
 
 
 -- Average profit per unit in each year
@@ -222,7 +141,7 @@ FROM base_cte
 GROUP BY year
 
 
-
+-- not in the final analysis, ideas for further checks --
 -- Dino Egg & Action Figure sales trend over 2017 - 2018
 
 SELECT YEAR(sa.date) AS 'year', 
@@ -235,18 +154,83 @@ WHERE p.product_category = 'toys'
 AND p.product_name IN ('Dino Egg', 'Action Figure')
 AND DATEPART(QUARTER, sa.date) IN (1, 2, 3)
 GROUP BY YEAR(sa.date), DATEPART(QUARTER, sa.date), p.product_name
---ORDER BY p.product_name, YEAR(sa.date), DATEPART(QUARTER, sa.date)
+ORDER BY p.product_name, YEAR(sa.date), DATEPART(QUARTER, sa.date)
 
+-- ELECTRONICS --
 -- producr price & profit of electronics products
 
 SELECT product_name,
-	   product_price AS 'Price',
-	   product_cost AS 'Cost',
+	   product_price AS 'price',
+	   product_cost AS 'cost',
 	   (product_price - product_cost) AS 'product_profit'
 FROM products
 WHERE product_category = 'electronics'
 
--- checking for stocks of colotbuds & gamer heaphones over time in different stores in downtown (electronics category)
+
+-- units sold per product over time (pivot table)
+
+WITH base_cte AS (
+SELECT  p.product_name,
+	    YEAR(sa.date) AS 'year', 
+		DATEPART(QUARTER, sa.date) AS 'quarter',
+		SUM(sa.units) AS 'units_sold'
+FROM products AS p JOIN sales AS sa
+ON p.product_id = sa.product_id
+WHERE product_category = 'electronics'
+GROUP BY p.product_name, YEAR(sa.date), DATEPART(QUARTER, sa.date)
+)
+SELECT product_name,
+		[2017 Q1], [2017 Q2], [2017 Q3],
+		[2018 Q1], [2018 Q2], [2018 Q3]
+FROM (
+	SELECT 
+		CONCAT(year, ' Q', quarter) AS year_quarter, 
+		product_name, 
+		units_sold
+	FROM base_cte
+	) AS TBL
+PIVOT (SUM(units_sold) FOR 
+		year_quarter IN ([2017 Q1], [2017 Q2], [2017 Q3],
+						[2018 Q1], [2018 Q2], [2018 Q3])
+	) AS PVT
+ORDER BY product_name
+
+
+-- percentage of electronics products sold over time (pivot table) 
+-- % out of total electronics products sold each quarter
+
+WITH base_cte AS (
+SELECT  p.product_name,
+	    YEAR(sa.date) AS 'year', 
+		DATEPART(QUARTER, sa.date) AS 'quarter',
+		SUM(sa.units) AS 'units_sold',
+		SUM(SUM(sa.units)) OVER (PARTITION BY YEAR(sa.date)) AS 'total_units_sold_per_year',
+		ROUND(SUM(sa.units) * 100.0 / SUM(SUM(sa.units)) OVER (PARTITION BY YEAR(sa.date), DATEPART(QUARTER, sa.date)), 0) AS 'percentage_of_total_products'
+FROM products AS p JOIN sales AS sa
+ON p.product_id = sa.product_id
+WHERE product_category = 'electronics'
+GROUP BY p.product_name, YEAR(sa.date), DATEPART(QUARTER, sa.date)
+)
+SELECT product_name,
+		[2017 Q1], [2017 Q2], [2017 Q3],
+		[2018 Q1], [2018 Q2], [2018 Q3]
+FROM (
+	SELECT 
+		CONCAT(year, ' Q', quarter) AS year_quarter, 
+		product_name, 
+		percentage_of_total_products
+	FROM base_cte
+	) AS TBL
+PIVOT (SUM(percentage_of_total_products) FOR 
+		year_quarter IN ([2017 Q1], [2017 Q2], [2017 Q3],
+						[2018 Q1], [2018 Q2], [2018 Q3])
+	) AS PVT
+ORDER BY product_name
+
+
+
+-- checking for stocks of colorbuds & gamer heaphones over time in different stores in downtown (electronics category) 
+-- (couldnt find an interesting findings here below)
 
 WITH base_cte AS (
 SELECT st.store_name, 
